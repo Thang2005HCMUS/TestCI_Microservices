@@ -9,15 +9,16 @@ _counter = 0
 def method2():
     return 1 
 def NewMethod():
-    return 22
+    return 2
 def cal():
-    return 1234
+    return 123
 class ProductCreate(BaseModel):
     name: str
     price: float
     stock: int = 0
 
-
+def ff():
+    return 1234
 class Product(ProductCreate):
     id: int
 
