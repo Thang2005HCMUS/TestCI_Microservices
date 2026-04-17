@@ -27,6 +27,7 @@ class Order(BaseModel):
 
 @app.get("/health")
 def health():
+    a = 1
     return {"status": "ok", "service": "order-service"}
 
 

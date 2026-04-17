@@ -11,7 +11,7 @@ def method2():
 def NewMethod():
     return 2
 def cal():
-    return 123
+    return 1234
 class ProductCreate(BaseModel):
     name: str
     price: float
