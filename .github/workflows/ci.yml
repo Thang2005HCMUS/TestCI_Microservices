@@ -1,41 +1,59 @@
+# .github/workflows/ci.yml
 name: CI
 
 on:
   push:
     branches: ["main", "develop","master"]
   pull_request:
-    branches: ["main", "develop","master"]
+    branches: ["main", "develop"]
 
 jobs:
-  test:
+  detect-changes:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [user-service, product-service, order-service, notification-service]
-
+    outputs:
+      user-service: ${{ steps.filter.outputs.user-service }}
+      product-service: ${{ steps.filter.outputs.product-service }}
+      order-service: ${{ steps.filter.outputs.order-service }}
+      notification-service: ${{ steps.filter.outputs.notification-service }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
-          python-version: "3.10"
-          cache: "pip"
+          filters: |
+            user-service:
+              - 'services/user-service/**'
+            product-service:
+              - 'services/product-service/**'
+            order-service:
+              - 'services/order-service/**'
+            notification-service:
+              - 'services/notification-service/**'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+  test-user-service:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.user-service == 'true'
+    uses: ./.github/workflows/test-service.yml
+    with:
+      service: user-service
 
-      - name: Lint (${{ matrix.service }})
-        run: |
-          pip install ruff
-          ruff check services/${{ matrix.service }}/
+  test-product-service:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.product-service == 'true'
+    uses: ./.github/workflows/test-service.yml
+    with:
+      service: product-service
 
-      - name: Test (${{ matrix.service }})
-        run: |
-          pytest services/${{ matrix.service }}/tests/ -v --tb=short
+  test-order-service:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.order-service == 'true'
+    uses: ./.github/workflows/test-service.yml
+    with:
+      service: order-service
 
-  all-green:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "All services passed CI ✅"
+  test-notification-service:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.notification-service == 'true'
+    uses: ./.github/workflows/test-service.yml
+    with:
+      service: notification-service
