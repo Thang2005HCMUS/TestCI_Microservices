@@ -25,7 +25,7 @@ jobs:
           python-version: "3.12"
           cache: "pip"
           # Cache sẽ tìm file requirements.txt dựa trên working-directory
-          cache-dependency-path: "${{ inputs.working_directory }}/requirements.txt"
+        
 
       - name: Install dependencies
         run: pip install -r requirements.txt
