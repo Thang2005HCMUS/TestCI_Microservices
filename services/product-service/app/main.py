@@ -7,7 +7,8 @@ app = FastAPI(title="Product Service", version="1.0.0")
 _products: Dict[int, dict] = {}
 _counter = 0
 
-
+def cal(l):
+    return sum(l)
 class ProductCreate(BaseModel):
     name: str
     price: float
