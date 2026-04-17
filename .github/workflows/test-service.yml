@@ -1,4 +1,3 @@
-# .github/workflows/test-service.yml
 name: Test Service (reusable)
 
 on:
@@ -7,16 +6,34 @@ on:
       service:
         required: true
         type: string
+      working_directory:
+        required: true
+        type: string
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: "pip"
-      - run: pip install -r requirements.txt
-      - run: pip install ruff && ruff check .
-      - run: pytest ./tests/ -v --tb=short
+          # Cache sẽ tìm file requirements.txt dựa trên working-directory
+          cache-dependency-path: "${{ inputs.working_directory }}/requirements.txt"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with ruff
+        run: |
+          pip install ruff
+          ruff check .
+
+      - name: Run tests with pytest
+        run: pytest ./tests/ -v --tb=short

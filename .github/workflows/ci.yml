@@ -1,11 +1,10 @@
-# .github/workflows/ci.yml
-name: CI
+name: CI Monorepo
 
 on:
   push:
-    branches: ["main", "develop","master","feature"]
+    branches: ["main", "develop", "master", "feature"]
   pull_request:
-    branches: ["main", "feature", "develop","master"]
+    branches: ["main", "feature", "develop", "master"]
 
 jobs:
   detect-changes:
@@ -33,39 +32,31 @@ jobs:
   test-user-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.user-service == 'true'
-    defaults:
-      run:
-        working-directory: ./services/user-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: user-service
+      working_directory: ./services/user-service
 
   test-product-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.product-service == 'true'
-    defaults:
-      run:
-        working-directory: ./services/product-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: product-service
+      working_directory: ./services/product-service
 
   test-order-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.order-service == 'true'
-    defaults:
-      run:
-        working-directory: ./services/order-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: order-service
+      working_directory: ./services/order-service
 
   test-notification-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.notification-service == 'true'
-    defaults:
-      run:
-        working-directory: ./services/notification-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: notification-service
+      working_directory: ./services/notification-service
