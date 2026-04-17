@@ -6,6 +6,8 @@ app = FastAPI(title="Product Service", version="1.0.0")
 
 _products: Dict[int, dict] = {}
 _counter = 0
+def method2():
+    return 1 
 def NewMethod():
     return 2
 def cal():

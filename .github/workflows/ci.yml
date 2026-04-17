@@ -33,6 +33,9 @@ jobs:
   test-user-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.user-service == 'true'
+    defaults:
+      run:
+        working-directory: ./services/user-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: user-service
@@ -40,6 +43,9 @@ jobs:
   test-product-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.product-service == 'true'
+    defaults:
+      run:
+        working-directory: ./services/product-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: product-service
@@ -47,6 +53,9 @@ jobs:
   test-order-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.order-service == 'true'
+    defaults:
+      run:
+        working-directory: ./services/order-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: order-service
@@ -54,6 +63,9 @@ jobs:
   test-notification-service:
     needs: detect-changes
     if: needs.detect-changes.outputs.notification-service == 'true'
+    defaults:
+      run:
+        working-directory: ./services/notification-service
     uses: ./.github/workflows/test-service.yml
     with:
       service: notification-service
