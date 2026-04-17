@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [user-service, product-service, order-service, notification-service]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint (${{ matrix.service }})
+        run: |
+          pip install ruff
+          ruff check services/${{ matrix.service }}/
+
+      - name: Test (${{ matrix.service }})
+        run: |
+          pytest services/${{ matrix.service }}/tests/ -v --tb=short
+
+  all-green:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All services passed CI ✅"
