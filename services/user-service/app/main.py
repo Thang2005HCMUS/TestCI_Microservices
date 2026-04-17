@@ -17,7 +17,8 @@ class UserCreate(BaseModel):
 class User(UserCreate):
     id: int
 
-
+def f():
+    return 1
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "user-service"}

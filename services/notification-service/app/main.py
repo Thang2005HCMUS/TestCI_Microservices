@@ -15,7 +15,7 @@ class NotificationRequest(BaseModel):
     channel: str = "email"   # email | sms | push
 
 def NewMethod():
-    return 2
+    return 23
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "notification-service"}

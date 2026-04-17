@@ -9,7 +9,7 @@ _counter = 0
 def method2():
     return 1 
 def NewMethod():
-    return 2
+    return 22
 def cal():
     return 1234
 class ProductCreate(BaseModel):

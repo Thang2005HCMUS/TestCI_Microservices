@@ -24,10 +24,11 @@ class Order(BaseModel):
     items: List[OrderItem]
     status: str = "pending"
 
-
+def f():
+    return 1
 @app.get("/health")
 def health():
-    a = 1
+    
     return {"status": "ok", "service": "order-service"}
 
 
