@@ -21,7 +21,7 @@ def test_send_email():
     }
     res = client.post("/notify", json=payload)
     assert res.status_code == 202
-    assert res.json()["delivered"] is True or "id" in res.json()
+    assert "id" in res.json()
 
 
 def test_send_sms():
